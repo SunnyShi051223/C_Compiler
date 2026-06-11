@@ -1,0 +1,45 @@
+// 1. 结构体定义 (Type Definition)
+struct Point {
+    int x;
+    int y;
+};
+
+int main() {
+    // 2. 变量声明
+    struct Point p;
+    int n;
+    char label;
+    double ratio;
+    int a[10];
+
+    // 3. I/O 与赋值语句
+    read(n);
+    p.x = 0;       // 结构体成员赋值
+    p.y = 10;
+    label = 'A';
+    a[0] = 0;
+    a[2] = 2;
+
+    // 4. 循环语句
+    while (n > 0) {
+        p.x = p.x + 1;
+        n = n - 1;
+    }
+
+    // 5. 选择语句
+    if (p.x > p.y) {
+        label = 'S';
+    } else {
+        label = 'F';
+    }
+
+    // 6. 成员读取与输出
+    write(p.x);
+    write(label);
+    write(a[0]);
+
+    return 0;
+}
+
+/* 测试非法字符 */
+int bad$var = 10;

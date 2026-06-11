@@ -1,0 +1,10 @@
+# ninja log v5
+21	883	8028747819759887	CMakeFiles/ShiXvn_Compiler.dir/ErrorHandler.cpp.obj	784d0ba5ac7d7912
+28	945	8028747820365443	CMakeFiles/ShiXvn_Compiler.dir/SymbolTable.cpp.obj	3ba259d677212a6f
+8	1273	8028754238882193	CMakeFiles/ShiXvn_Compiler.dir/main.cpp.obj	9ce6cb3f27a5809
+1513	1942	8028754245311186	ShiXvn_Compiler.exe	f88d1abe5dd03ac0
+13	1459	8028747825503718	CMakeFiles/ShiXvn_Compiler.dir/Lexer.cpp.obj	fccd34ad97e2c49f
+23	932	8028754235472827	CMakeFiles/ShiXvn_Compiler.dir/src/ErrorHandler.cpp.obj	94f2c20c80259165
+28	1004	8028754236164753	CMakeFiles/ShiXvn_Compiler.dir/src/SymbolTable.cpp.obj	2c4ea4de9b5e2b65
+17	1513	8028754241134063	CMakeFiles/ShiXvn_Compiler.dir/src/Lexer.cpp.obj	97b0d56d00c095d1
+7	272	8028755351405269	D:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe	69c40889e49610a3

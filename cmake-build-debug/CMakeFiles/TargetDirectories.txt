@@ -1,0 +1,3 @@
+D:/c_cpp/ShiXvn_Compiler/cmake-build-debug/CMakeFiles/ShiXvn_Compiler.dir
+D:/c_cpp/ShiXvn_Compiler/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/c_cpp/ShiXvn_Compiler/cmake-build-debug/CMakeFiles/rebuild_cache.dir
