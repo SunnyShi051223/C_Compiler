@@ -93,56 +93,92 @@
 
 ## 4. 语法结构与综合示例 (Syntax Overview)
 
-Micro-C 程序由可选的结构体定义区和唯一的 `main` 函数构成。
+Micro-C 程序为语句序列，语句之间以 `;` 分隔。
 
-**完整的 Micro-C 源程序测试用例（涵盖所有考点）：**
-
-C
+### 4.1 文法产生式（简单优先文法）
 
 ```
-// 1. 结构体定义 (Type Definition)
-struct Point {
-    int x;
-    int y;
-};
-
-int main() {
-    // 2. 变量声明
-    struct Point p;
-    int n;
-    char label;
-    double ratio;
-    int a[10];
-    
-    // 3. I/O 与赋值语句
-    read(n);
-    p.x = 0;       // 结构体成员赋值
-    p.y = 10;
-    label = 'A';
-    a[0] = 0;
-    a[2] = 2
-    
-    // 4. 循环语句
-    while (n > 0) {
-        p.x = p.x + 1;
-        n = n - 1;
-    }
-    
-    // 5. 选择语句
-    if (p.x > p.y) {
-        label = 'S';
-    } else {
-        label = 'F';
-    }
-    
-    // 6. 成员读取与输出
-    write(p.x);
-    write(label);
-    write(a[0]);
-    
-    return 0;
-}
+P → S ; P | S ;                     (程序 = 语句序列)
+S → int id | char id | double id    (变量声明)
+  | struct id { P }                 (结构体定义)
+  | id = E                          (赋值)
+  | id ( E ) | id ( id ) | id ( )   (函数调用: read/write 等)
+  | while ( E ) { P }               (循环)
+  | if ( E ) { P } else { P }       (选择)
+  | return E                        (返回)
+E → E + E | E - E | E * E | E / E  (算术)
+  | E < E | E > E | E == E          (关系)
+  | E . id                          (成员访问)
+  | E [ E ]                         (数组下标)
+  | ( E ) | id | num | char         (基本元素)
 ```
+
+### 4.2 支持的语法结构
+
+| 结构 | 示例 |
+|------|------|
+| 变量声明 | `int x ;` `char c ;` `double d ;` |
+| 结构体定义 | `struct Point { int x ; int y ; } ;` |
+| 赋值 | `x = 0 ;` `label = 'A' ;` |
+| 算术表达式 | `x = a + b * c ;` |
+| 关系表达式 | `x = a < b ;` `x = a > b ;` `x = a == b ;` |
+| 成员访问 | `x = p . x ;` `x = p . y ;` |
+| 输入输出 | `read(x) ;` `write(label) ;` |
+| 循环 | `while(x < 10) { x = x + 1 ; } ;` |
+| 选择 | `if(x < 5) { y = 1 ; } else { y = 2 ; } ;` |
+| 返回 | `return 0 ;` |
+
+### 4.3 完整测试用例
+
+```
+// Micro-C 测试程序
+int x ;
+char label ;
+double ratio ;
+struct Point { int x ; int y ; } ;
+read(x) ;
+write(x) ;
+x = 0 ;
+label = 'A' ;
+ratio = 3 ;
+x = x + 1 ;
+x = a - b ;
+x = a * b + c ;
+x = a / b ;
+x = a < b ;
+x = a > b ;
+x = a == b ;
+x = p . x ;
+x = p . y ;
+while(x < 10) { x = x + 1 ; } ;
+if(x > 5) { label = 'S' ; } else { label = 'F' ; } ;
+return 0 ;
+```
+
+### 4.4 简单优先文法的限制
+
+以下语法结构在词法层面可正确识别 Token，但简单优先文法无法处理：
+
+| 结构 | 示例 | 限制原因 |
+|------|------|---------|
+| 数组读取赋值 | `x = arr[i]` | `[ E ]` 归约为 `E` 后，`=` 和 `E` 不相邻 |
+| 数组声明 | `int a[10]` | `id = [` 与 `E [ E ]` 的 `id > [` 冲突 |
+| 函数体 | `int main() { ... }` | `P → S ; P` 在块内的归约时机问题 |
+
+**已实现的功能：**
+- ✅ 变量声明：`int x ;` `char c ;` `double d ;`
+- ✅ 结构体定义：`struct Point { int x ; int y ; } ;`
+- ✅ 结构体变量声明：`struct Point p ;`
+- ✅ 赋值：`x = 0 ;` `label = 'A' ;`
+- ✅ 算术表达式：`x = a + b * c ;`（运算符优先级正确）
+- ✅ 关系表达式：`x = a < b ;` `x = a > b ;` `x = a == b ;`
+- ✅ 成员赋值：`p . x = 10 ;`
+- ✅ 成员访问（读取）：`z = p . x ;`
+- ✅ 数组下标（读取）：`z = arr[i] ;`
+- ✅ 函数调用：`read(x) ;` `write(x) ;`
+- ✅ 循环：`while(x < 10) { x = x + 1 ; } ;`
+- ✅ 选择：`if(x < 5) { ... } else { ... } ;`
+- ✅ 返回：`return 0 ;`
 
 ## 5. 词法分析器 (Lexer) 核心设计与数据结构
 

@@ -1,45 +1,57 @@
-// 1. 结构体定义 (Type Definition)
+// Micro-C 综合测试 — 覆盖全部语法结构
+
+// ===== 1. 变量声明 =====
+int x ;
+int y ;
+int z ;
+char c ;
+double d ;
+
+// ===== 2. 结构体定义 + 变量声明 =====
 struct Point {
-    int x;
-    int y;
-};
+    int px ;
+    int py ;
+} ;
+struct Point p ;
 
-int main() {
-    // 2. 变量声明
-    struct Point p;
-    int n;
-    char label;
-    double ratio;
-    int a[10];
+// ===== 3. 赋值语句 =====
+x = 10 ;
+y = 20 ;
+c = 'A' ;
+d = 3 ;
+z = 0 ;
 
-    // 3. I/O 与赋值语句
-    read(n);
-    p.x = 0;       // 结构体成员赋值
-    p.y = 10;
-    label = 'A';
-    a[0] = 0;
-    a[2] = 2;
+// ===== 4. 成员赋值 =====
+p . px = 100 ;
+p . py = 200 ;
 
-    // 4. 循环语句
-    while (n > 0) {
-        p.x = p.x + 1;
-        n = n - 1;
-    }
+// ===== 5. 算术表达式 =====
+z = x + y ;
+z = x - y ;
+z = x * y ;
+z = x / y ;
+z = x + y * 2 ;
+z = x * y + 1 ;
 
-    // 5. 选择语句
-    if (p.x > p.y) {
-        label = 'S';
-    } else {
-        label = 'F';
-    }
+// ===== 6. 关系表达式 =====
+z = x < y ;
+z = x > y ;
+z = x == y ;
 
-    // 6. 成员读取与输出
-    write(p.x);
-    write(label);
-    write(a[0]);
+// ===== 7. 成员访问（读取）=====
+z = p . px ;
+z = p . py ;
 
-    return 0;
-}
+// ===== 8. 输入输出 =====
+read(x) ;
+write(z) ;
+write(x) ;
 
-/* 测试非法字符 */
-int bad$var = 10;
+// ===== 9. 循环 =====
+while(x < 10) { x = x + 1 ; } ;
+
+// ===== 10. 选择 =====
+if(x > 5) { y = 1 ; } else { y = 2 ; } ;
+
+// ===== 11. 返回 =====
+return 0 ;

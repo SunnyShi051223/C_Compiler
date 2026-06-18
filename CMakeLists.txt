@@ -9,6 +9,9 @@ add_executable(ShiXvn_Compiler
         src/Lexer.cpp
         src/ErrorHandler.cpp
         src/SymbolTable.cpp
+        src/Grammar.cpp
+        src/PrecedenceParser.cpp
+        src/SemanticAnalyzer.cpp
 )
 
 target_include_directories(ShiXvn_Compiler PRIVATE include)

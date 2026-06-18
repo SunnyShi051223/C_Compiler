@@ -1,0 +1,5 @@
+========== FIRSTVT 集合 ==========
+
+FIRSTVT(E) = { (, *, +, -, ., /, <, ==, >, [, char, id, num }
+FIRSTVT(P) = { ;, char, double, id, if, int, return, struct, while }
+FIRSTVT(S) = { char, double, id, if, int, return, struct, while }

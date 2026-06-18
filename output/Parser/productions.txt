@@ -1,0 +1,31 @@
+========== 产生式列表 ==========
+
+(1)  P → S ; P 
+(2)  P → S ; 
+(3)  S → int id 
+(4)  S → char id 
+(5)  S → double id 
+(6)  S → struct id { P } 
+(7)  S → struct id id 
+(8)  S → id = E 
+(9)  S → id . id = E 
+(10)  S → id [ E ] = E 
+(11)  S → id ( E ) 
+(12)  S → id ( id ) 
+(13)  S → id ( ) 
+(14)  S → while ( E ) { P } 
+(15)  S → if ( E ) { P } else { P } 
+(16)  S → return E 
+(17)  E → E + E 
+(18)  E → E - E 
+(19)  E → E * E 
+(20)  E → E / E 
+(21)  E → E < E 
+(22)  E → E > E 
+(23)  E → E == E 
+(24)  E → E . id 
+(25)  E → E [ E ] 
+(26)  E → ( E ) 
+(27)  E → id 
+(28)  E → num 
+(29)  E → char 
