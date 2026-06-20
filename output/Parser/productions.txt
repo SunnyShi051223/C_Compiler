@@ -8,24 +8,21 @@
 (6)  S → struct id { P } 
 (7)  S → struct id id 
 (8)  S → id = E 
-(9)  S → id . id = E 
-(10)  S → id [ E ] = E 
-(11)  S → id ( E ) 
-(12)  S → id ( id ) 
-(13)  S → id ( ) 
-(14)  S → while ( E ) { P } 
-(15)  S → if ( E ) { P } else { P } 
-(16)  S → return E 
+(9)  S → E 
+(10)  S → while ( E ) { P } 
+(11)  S → if ( E ) { P } else { P } 
+(12)  S → return E 
+(13)  E → id ( ) 
+(14)  E → id ( E ) 
+(15)  E → id ( E , E ) 
+(16)  E → id ( E , E , E ) 
 (17)  E → E + E 
 (18)  E → E - E 
 (19)  E → E * E 
 (20)  E → E / E 
 (21)  E → E < E 
 (22)  E → E > E 
-(23)  E → E == E 
-(24)  E → E . id 
-(25)  E → E [ E ] 
-(26)  E → ( E ) 
-(27)  E → id 
-(28)  E → num 
-(29)  E → char 
+(23)  E → ( E ) 
+(24)  E → id 
+(25)  E → num 
+(26)  E → char 

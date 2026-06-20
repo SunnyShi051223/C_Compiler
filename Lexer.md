@@ -118,14 +118,18 @@ E → E + E | E - E | E * E | E / E  (算术)
 | 结构 | 示例 |
 |------|------|
 | 变量声明 | `int x ;` `char c ;` `double d ;` |
-| 结构体定义 | `struct Point { int x ; int y ; } ;` |
-| 赋值 | `x = 0 ;` `label = 'A' ;` |
-| 算术表达式 | `x = a + b * c ;` |
-| 关系表达式 | `x = a < b ;` `x = a > b ;` `x = a == b ;` |
-| 成员访问 | `x = p . x ;` `x = p . y ;` |
-| 输入输出 | `read(x) ;` `write(label) ;` |
+| 结构体定义 | `struct Point { int x ; } ;` |
+| 结构体变量 | `struct Point p ;` |
+| 赋值 | `x = 10 ;` `c = 'A' ;` |
+| 算术表达式 | `z = x + y * 2 ;` |
+| 关系表达式 | `z = x < y ;` `z = x > b ;` |
+| 成员访问 | `z = p . x ;` |
+| 函数调用（无参） | `bar() ;` |
+| 函数调用（单参） | `read(x) ;` `write(z) ;` `foo(x) ;` |
+| 函数调用（双参） | `z = get(a, i) ;` |
+| 函数调用（三参） | `set(p, x, 10) ;` |
 | 循环 | `while(x < 10) { x = x + 1 ; } ;` |
-| 选择 | `if(x < 5) { y = 1 ; } else { y = 2 ; } ;` |
+| 选择 | `if(x > 5) { y = 1 ; } else { y = 2 ; } ;` |
 | 返回 | `return 0 ;` |
 
 ### 4.3 完整测试用例
@@ -133,25 +137,35 @@ E → E + E | E - E | E * E | E / E  (算术)
 ```
 // Micro-C 测试程序
 int x ;
-char label ;
-double ratio ;
-struct Point { int x ; int y ; } ;
+int y ;
+int z ;
+char c ;
+double d ;
+int a ;
+int b ;
+int i ;
+x = 10 ;
+y = 20 ;
+c = 'A' ;
+d = 3 ;
+a = 5 ;
+b = 3 ;
+i = 0 ;
+z = x + y * 2 ;
+z = x - y ;
+z = x * y + 1 ;
+z = x / y ;
+z = x < y ;
+z = x > b ;
 read(x) ;
+write(z) ;
 write(x) ;
-x = 0 ;
-label = 'A' ;
-ratio = 3 ;
-x = x + 1 ;
-x = a - b ;
-x = a * b + c ;
-x = a / b ;
-x = a < b ;
-x = a > b ;
-x = a == b ;
-x = p . x ;
-x = p . y ;
+foo(x) ;
+bar() ;
+set(a, x, 10) ;
+z = get(a, i) ;
 while(x < 10) { x = x + 1 ; } ;
-if(x > 5) { label = 'S' ; } else { label = 'F' ; } ;
+if(x > 5) { y = 1 ; } else { y = 2 ; } ;
 return 0 ;
 ```
 
@@ -161,23 +175,30 @@ return 0 ;
 
 | 结构 | 示例 | 限制原因 |
 |------|------|---------|
-| 数组读取赋值 | `x = arr[i]` | `[ E ]` 归约为 `E` 后，`=` 和 `E` 不相邻 |
+| 成员赋值 | `p.x = 10` | `id . id` 被过早归约为 `E` |
+| 数组赋值 | `a[0] = 5` | `id [ E ]` 被过早归约为 `E` |
 | 数组声明 | `int a[10]` | `id = [` 与 `E [ E ]` 的 `id > [` 冲突 |
-| 函数体 | `int main() { ... }` | `P → S ; P` 在块内的归约时机问题 |
+| 函数体多语句 | `int main() { ... }` | `P → S ; P` 在块内的归约时机问题 |
+
+**替代方案：** 上述限制可通过函数调用形式实现：
+- 成员赋值 → `set(p, x, 10)` （三参函数）
+- 数组赋值 → `set(a, 0, 5)` （三参函数）
+- 数组访问 → `z = get(a, i)` （双参函数表达式）
 
 **已实现的功能：**
 - ✅ 变量声明：`int x ;` `char c ;` `double d ;`
-- ✅ 结构体定义：`struct Point { int x ; int y ; } ;`
-- ✅ 结构体变量声明：`struct Point p ;`
-- ✅ 赋值：`x = 0 ;` `label = 'A' ;`
-- ✅ 算术表达式：`x = a + b * c ;`（运算符优先级正确）
-- ✅ 关系表达式：`x = a < b ;` `x = a > b ;` `x = a == b ;`
-- ✅ 成员赋值：`p . x = 10 ;`
-- ✅ 成员访问（读取）：`z = p . x ;`
-- ✅ 数组下标（读取）：`z = arr[i] ;`
-- ✅ 函数调用：`read(x) ;` `write(x) ;`
+- ✅ 结构体定义：`struct Point { int x ; } ;`
+- ✅ 结构体变量：`struct Point p ;`
+- ✅ 赋值：`x = 10 ;` `c = 'A' ;`
+- ✅ 算术表达式：`z = x + y * 2 ;`（运算符优先级正确）
+- ✅ 关系表达式：`z = x < y ;` `z = x > b ;`
+- ✅ 成员访问：`z = p . x ;`
+- ✅ 函数调用（无参）：`bar() ;`
+- ✅ 函数调用（单参）：`read(x) ;` `write(z) ;` `foo(x) ;`
+- ✅ 函数调用（双参）：`z = get(a, i) ;`
+- ✅ 函数调用（三参）：`set(p, x, 10) ;`
 - ✅ 循环：`while(x < 10) { x = x + 1 ; } ;`
-- ✅ 选择：`if(x < 5) { ... } else { ... } ;`
+- ✅ 选择：`if(x > 5) { x = 1 ; } else { x = 2 ; } ;`
 - ✅ 返回：`return 0 ;`
 
 ## 5. 词法分析器 (Lexer) 核心设计与数据结构

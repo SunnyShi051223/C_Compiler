@@ -73,6 +73,10 @@ public:
     std::vector<Quadruple> extractLastQuads(int n);
     // 恢复四元式
     void restoreQuads(const std::vector<Quadruple>& quads);
+    // 获取当前四元式数量
+    int getQuadCount() const;
+    // 提取从指定位置开始的所有四元式
+    std::vector<Quadruple> extractQuadsFrom(int start);
 
     // 输出
     void dumpQuads(const std::string& filename) const;

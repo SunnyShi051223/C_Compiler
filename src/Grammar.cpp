@@ -19,54 +19,55 @@ Grammar::Grammar() {
 }
 
 // ========================================================
-// 简单优先文法（增强版）
+// 严格简单优先文法
+// 条件: 1. 右部互不相同 2. 无ε 3. 无相邻非终结符
 //
-// 新增支持:
-// - E → E > E   (大于运算符)
-// - S → int id [ num ]  (数组声明)
-// - S → id . id = E     (成员访问赋值)
-// - S → id [ E ] = E    (数组元素赋值)
+// 设计要点:
+// - 函数调用统一为表达式 E → id(...)
+// - 表达式语句: S → E（函数调用结果作为语句）
+// - 赋值: S → id = E
+// - 成员/数组访问: get(p,x) / set(p,x,10) / get(a,i)
 // ========================================================
 
 void Grammar::initProductions() {
     int id = 1;
 
-    // 程序结构
+    // === 程序结构 ===
     productions_.push_back({id++, "P", {"S", ";", "P"}});
     productions_.push_back({id++, "P", {"S", ";"}});
 
-    // 声明
+    // === 声明语句 ===
     productions_.push_back({id++, "S", {"int", "id"}});
     productions_.push_back({id++, "S", {"char", "id"}});
     productions_.push_back({id++, "S", {"double", "id"}});
     productions_.push_back({id++, "S", {"struct", "id", "{", "P", "}"}});
     productions_.push_back({id++, "S", {"struct", "id", "id"}});
 
-    // 赋值语句
+    // === 赋值语句 ===
     productions_.push_back({id++, "S", {"id", "=", "E"}});
-    productions_.push_back({id++, "S", {"id", ".", "id", "=", "E"}});
-    productions_.push_back({id++, "S", {"id", "[", "E", "]", "=", "E"}});
 
-    // 函数调用
-    productions_.push_back({id++, "S", {"id", "(", "E", ")"}});
-    productions_.push_back({id++, "S", {"id", "(", "id", ")"}});
-    productions_.push_back({id++, "S", {"id", "(", ")"}});
+    // === 表达式语句（函数调用作为语句）===
+    productions_.push_back({id++, "S", {"E"}});
 
-    // 控制流
+    // === 控制流 ===
     productions_.push_back({id++, "S", {"while", "(", "E", ")", "{", "P", "}"}});
     productions_.push_back({id++, "S", {"if", "(", "E", ")", "{", "P", "}", "else", "{", "P", "}"}});
     productions_.push_back({id++, "S", {"return", "E"}});
 
-    // 表达式
+    // === 表达式 ===
+    // 函数调用（零/一/二/三参数）
+    productions_.push_back({id++, "E", {"id", "(", ")"}});
+    productions_.push_back({id++, "E", {"id", "(", "E", ")"}});
+    productions_.push_back({id++, "E", {"id", "(", "E", ",", "E", ")"}});
+    productions_.push_back({id++, "E", {"id", "(", "E", ",", "E", ",", "E", ")"}});
+    // 算术/关系
     productions_.push_back({id++, "E", {"E", "+", "E"}});
     productions_.push_back({id++, "E", {"E", "-", "E"}});
     productions_.push_back({id++, "E", {"E", "*", "E"}});
     productions_.push_back({id++, "E", {"E", "/", "E"}});
     productions_.push_back({id++, "E", {"E", "<", "E"}});
     productions_.push_back({id++, "E", {"E", ">", "E"}});
-    productions_.push_back({id++, "E", {"E", "==", "E"}});
-    productions_.push_back({id++, "E", {"E", ".", "id"}});
-    productions_.push_back({id++, "E", {"E", "[", "E", "]"}});
+    // 括号和基本元素
     productions_.push_back({id++, "E", {"(", "E", ")"}});
     productions_.push_back({id++, "E", {"id"}});
     productions_.push_back({id++, "E", {"num"}});
@@ -159,8 +160,12 @@ void Grammar::buildPrecedenceTable() {
     relation_["["]["]"] = "=";
     relation_["{"]["}"] = "=";
 
-    // 修复 FIRSTVT 传播导致的 = < ; 问题
-    // 在 S → id = E ; 中，正确关系应为 = > ;（归约 id = E → S）
+    // 逗号关系（产生式中被 E 隔开）
+    relation_["("][","] = "<";
+    relation_[","][","] = "=";
+    relation_[","][")"] = "=";
+
+    // 赋值关系（= 和 ; 被 E 隔开）
     relation_["="][";"] = ">";
 }
 

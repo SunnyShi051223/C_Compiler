@@ -1,5 +1,5 @@
 ========== LASTVT 集合 ==========
 
-LASTVT(E) = { ), *, +, -, /, <, ==, >, ], char, id, num }
+LASTVT(E) = { ), *, +, -, /, <, >, char, id, num }
 LASTVT(P) = { ; }
-LASTVT(S) = { ), *, +, -, /, <, =, ==, >, ], char, id, num, return, } }
+LASTVT(S) = { ), *, +, -, /, <, =, >, char, id, num, return, } }

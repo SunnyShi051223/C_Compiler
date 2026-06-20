@@ -182,6 +182,19 @@ void SemanticAnalyzer::restoreQuads(const vector<Quadruple>& quads) {
     }
 }
 
+int SemanticAnalyzer::getQuadCount() const {
+    return (int)quads_.size();
+}
+
+vector<Quadruple> SemanticAnalyzer::extractQuadsFrom(int start) {
+    vector<Quadruple> extracted;
+    if (start < 0) start = 0;
+    if (start >= (int)quads_.size()) return extracted;
+    extracted.assign(quads_.begin() + start, quads_.end());
+    quads_.erase(quads_.begin() + start, quads_.end());
+    return extracted;
+}
+
 // --- 将变量名/临时变量/常量映射为 Jack VM 操作数 ---
 static string toVM(const string& operand, const map<string, SymbolEntry>& symTable, int tempBase) {
     if (operand.empty() || operand == "_") return "";

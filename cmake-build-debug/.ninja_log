@@ -26,3 +26,12 @@
 380	8048	8033261357162738	CMakeFiles/ShiXvn_Compiler.dir/src/SemanticAnalyzer.cpp.obj	2c3779757d347792
 377	8105	8033261357721579	CMakeFiles/ShiXvn_Compiler.dir/src/PrecedenceParser.cpp.obj	a5add147881acdc5
 8105	9564	8033261372246367	D:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe	2605d32818acea78
+105	7407	8038895551174501	CMakeFiles/ShiXvn_Compiler.dir/src/Lexer.cpp.obj	97b0d56d00c095d1
+536	7617	8038895553259741	CMakeFiles/ShiXvn_Compiler.dir/src/PrecedenceParser.cpp.obj	a5add147881acdc5
+529	7639	8038895553487090	CMakeFiles/ShiXvn_Compiler.dir/src/Grammar.cpp.obj	75777fb713e16c1b
+7639	8892	8038895565958096	D:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe	2605d32818acea78
+5	321	8039077929623766	D:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe	2605d32818acea78
+6	264	8039082089441778	D:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe	2605d32818acea78
+5	242	8039088555837533	D:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe	2605d32818acea78
+5	1120	8039094698883639	CMakeFiles/ShiXvn_Compiler.dir/main.cpp.obj	9ce6cb3f27a5809
+1120	1365	8039094701273723	D:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe	2605d32818acea78

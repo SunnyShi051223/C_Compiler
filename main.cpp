@@ -76,9 +76,9 @@ int main(int argc, char* argv[]) {
 
     // ===== 阶段三：目标代码生成 =====
     semAnalyzer.dumpQuads("output/Codegen/quads.txt");
-    semAnalyzer.dumpTarget("output/Codegen/target.vm");
+    semAnalyzer.dumpTarget("output/Codegen/Main.vm");
     cout << "[Codegen] Quads   -> output/Codegen/quads.txt" << endl;
-    cout << "[Codegen] Target  -> output/Codegen/target.vm" << endl;
+    cout << "[Codegen] Target  -> output/Codegen/Main.vm" << endl;
 
     // ===== 结果 =====
     if (success) {

@@ -16,6 +16,7 @@ struct StackSymbol {
     int treeNodeId;
     std::string addr;   // 语义值：变量名/临时变量/常量
     std::string type;   // 类型信息
+    int quadCount;      // 该符号归约时的四元式数量（用于代码重排）
 };
 
 // --- 语法树节点 ---

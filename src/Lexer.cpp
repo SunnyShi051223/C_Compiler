@@ -281,7 +281,7 @@ Token Lexer::nextToken() {
 
     // 界符
     if (c == '(' || c == ')' || c == '{' || c == '}' ||
-        c == ';' || c == '[' || c == ']') {
+        c == ';' || c == '[' || c == ']' || c == ',') {
         return readDelimiter();
     }
 
