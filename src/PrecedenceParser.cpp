@@ -216,7 +216,7 @@ bool PrecedenceParser::reduce() {
                     treeNodes_[nodeId].children = childIds;
 
                     for (int i = 0; i < len; i++) stack_.pop_back();
-                    push({prod.left, false, line, nodeId, addr});
+                    push({prod.left, false, line, nodeId, addr, "", sem_.getQuadCount()});
 
                     string action = "REDUCE: ";
                     for (size_t i = 0; i < candidate.size(); i++) {
@@ -244,7 +244,7 @@ bool PrecedenceParser::parse(const vector<Token>& tokens) {
     trace_.clear();
     nextNodeId_ = 0;
 
-    push({"$", true, 0, createNode("$", true, 0), ""});
+    push({"$", true, 0, createNode("$", true, 0), "", 0});
 
     size_t inputPos = 0;
     bool hasSyntaxError = false;
