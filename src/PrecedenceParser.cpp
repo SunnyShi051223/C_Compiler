@@ -132,6 +132,7 @@ void PrecedenceParser::semanticAction(const Production& prod, int start) {
         string t = sem_.newTemp();
         sem_.emit(stack_[start + 1].symbol, stack_[start].addr, stack_[start + 2].addr, t);
         stack_[start].addr = t;
+        stack_[start].quadCount = sem_.getQuadCount();
     }
     // 函数调用表达式: id(E,E)
     else if (len == 6 && rhs[0] == "id" && rhs[2] == "E" && rhs[4] == "E") {
@@ -140,6 +141,7 @@ void PrecedenceParser::semanticAction(const Production& prod, int start) {
         sem_.emit("param", stack_[start + 4].addr, "", "");
         sem_.emit("call", stack_[start].addr, "2", t);
         stack_[start].addr = t;
+        stack_[start].quadCount = sem_.getQuadCount();
     }
     // 函数调用表达式: id(E)
     else if (len == 4 && rhs[0] == "id" && rhs[2] == "E") {
@@ -156,16 +158,19 @@ void PrecedenceParser::semanticAction(const Production& prod, int start) {
             sem_.emit("call", fn, "1", t);
             stack_[start].addr = t;
         }
+        stack_[start].quadCount = sem_.getQuadCount();
     }
     // 函数调用表达式: id()
     else if (len == 3 && rhs[0] == "id" && rhs[2] == ")") {
         string t = sem_.newTemp();
         sem_.emit("call", stack_[start].addr, "0", t);
         stack_[start].addr = t;
+        stack_[start].quadCount = sem_.getQuadCount();
     }
     // ( E )
     else if (len == 3 && rhs[0] == "(" && rhs[2] == ")") {
         stack_[start].addr = stack_[start + 1].addr;
+        stack_[start].quadCount = stack_[start + 1].quadCount;
     }
     // id
     else if (len == 1 && rhs[0] == "id") {
@@ -173,6 +178,11 @@ void PrecedenceParser::semanticAction(const Production& prod, int start) {
             sem_.checkDeclared(stack_[start].addr, stack_[start].line);
             sem_.declareVariable(stack_[start].addr, "int");
         }
+        stack_[start].quadCount = sem_.getQuadCount();
+    }
+    // num / char
+    else if (len == 1 && (rhs[0] == "num" || rhs[0] == "char")) {
+        stack_[start].quadCount = sem_.getQuadCount();
     }
 }
 
