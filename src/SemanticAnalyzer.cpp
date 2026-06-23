@@ -11,7 +11,42 @@ using std::endl;
 using std::to_string;
 using std::map;
 
-SemanticAnalyzer::SemanticAnalyzer() : tempCount_(0), labelCount_(0), varCount_(0) {}
+SemanticAnalyzer::SemanticAnalyzer() : tempCount_(0), labelCount_(0), varCount_(0) {
+    // 初始化全局作用域
+    scopeStack_.push_back({{}, 0});
+}
+
+// ==================== 作用域管理 ====================
+void SemanticAnalyzer::enterScope() {
+    scopeStack_.push_back({{}, varCount_});
+}
+
+void SemanticAnalyzer::exitScope() {
+    if (scopeStack_.size() > 1) {
+        scopeStack_.pop_back();
+    }
+}
+
+int SemanticAnalyzer::getCurrentScopeLevel() const {
+    return (int)scopeStack_.size() - 1;
+}
+
+// 在作用域栈中从内到外查找
+SymbolEntry* SemanticAnalyzer::lookup(const string& name) {
+    for (int i = (int)scopeStack_.size() - 1; i >= 0; i--) {
+        auto it = scopeStack_[i].symbols.find(name);
+        if (it != scopeStack_[i].symbols.end()) return &it->second;
+    }
+    return nullptr;
+}
+
+const SymbolEntry* SemanticAnalyzer::lookup(const string& name) const {
+    for (int i = (int)scopeStack_.size() - 1; i >= 0; i--) {
+        auto it = scopeStack_[i].symbols.find(name);
+        if (it != scopeStack_[i].symbols.end()) return &it->second;
+    }
+    return nullptr;
+}
 
 string SemanticAnalyzer::newTemp() {
     return "t" + to_string(tempCount_++);
@@ -22,27 +57,61 @@ string SemanticAnalyzer::newLabel() {
 }
 
 void SemanticAnalyzer::declareVariable(const string& name, const string& type) {
-    if (symbolTable_.find(name) == symbolTable_.end()) {
-        symbolTable_[name] = {name, type, varCount_++, false};
+    // 检查当前作用域是否已存在同名变量
+    auto& currentScope = scopeStack_.back();
+    if (currentScope.symbols.find(name) != currentScope.symbols.end()) {
+        return;  // 当前作用域已存在，忽略重复声明
     }
+    currentScope.symbols[name] = {name, type, varCount_++, false};
 }
 
 bool SemanticAnalyzer::isDeclared(const string& name) const {
-    return symbolTable_.find(name) != symbolTable_.end();
+    return lookup(name) != nullptr;
 }
 
 string SemanticAnalyzer::getType(const string& name) const {
-    auto it = symbolTable_.find(name);
-    return it != symbolTable_.end() ? it->second.type : "";
+    const SymbolEntry* entry = lookup(name);
+    return entry ? entry->type : "";
 }
 
 int SemanticAnalyzer::getOffset(const string& name) const {
-    auto it = symbolTable_.find(name);
-    return it != symbolTable_.end() ? it->second.offset : -1;
+    const SymbolEntry* entry = lookup(name);
+    return entry ? entry->offset : -1;
 }
 
 int SemanticAnalyzer::getVariableCount() const {
     return varCount_;
+}
+
+// ==================== 函数表 ====================
+void SemanticAnalyzer::declareFunction(const string& name, const vector<string>& paramTypes, const string& returnType) {
+    funcTable_[name] = {name, paramTypes, returnType};
+}
+
+bool SemanticAnalyzer::isFunctionDeclared(const string& name) const {
+    return funcTable_.find(name) != funcTable_.end();
+}
+
+const FuncEntry* SemanticAnalyzer::getFunction(const string& name) const {
+    auto it = funcTable_.find(name);
+    return it != funcTable_.end() ? &it->second : nullptr;
+}
+
+void SemanticAnalyzer::checkFunctionCall(const string& name, int argCount, int line) {
+    // 内置函数特殊处理
+    if (name == "read") {
+        if (argCount != 0) cerr << "Semantic Error at Line " << line << ": read() expects 0 arguments\n";
+        return;
+    }
+    if (name == "write") {
+        if (argCount != 1) cerr << "Semantic Error at Line " << line << ": write() expects 1 argument\n";
+        return;
+    }
+    auto it = funcTable_.find(name);
+    if (it != funcTable_.end() && (int)it->second.paramTypes.size() != argCount) {
+        cerr << "Semantic Error at Line " << line << ": function '" << name
+             << "' expects " << it->second.paramTypes.size() << " arguments, got " << argCount << "\n";
+    }
 }
 
 // --- 结构体类型表 ---
@@ -71,6 +140,21 @@ bool SemanticAnalyzer::isStructMember(const string& structName, const string& me
         if (m == memberName) return true;
     }
     return false;
+}
+
+int SemanticAnalyzer::getMemberOffset(const string& structName, const string& memberName) const {
+    auto it = structTable_.find(structName);
+    if (it == structTable_.end()) return -1;
+    for (size_t i = 0; i < it->second.memberNames.size(); i++) {
+        if (it->second.memberNames[i] == memberName) return (int)i;
+    }
+    return -1;
+}
+
+int SemanticAnalyzer::getStructMemberCount(const string& structName) const {
+    auto it = structTable_.find(structName);
+    if (it == structTable_.end()) return 0;
+    return (int)it->second.memberNames.size();
 }
 
 // --- 语义检查 ---
@@ -199,8 +283,16 @@ vector<Quadruple> SemanticAnalyzer::extractQuadsFrom(int start) {
 static string toVM(const string& operand, const map<string, SymbolEntry>& symTable, int tempBase) {
     if (operand.empty() || operand == "_") return "";
 
-    // 常量
+    // 常量（Jack VM 只支持整数，浮点数截断为整数）
     if (isdigit(operand[0]) || operand[0] == '-') {
+        // 检查是否为浮点数
+        size_t dotPos = operand.find('.');
+        if (dotPos != string::npos) {
+            // 截断为整数
+            string intPart = operand.substr(0, dotPos);
+            if (intPart.empty() || intPart == "-") intPart += "0";
+            return "constant " + intPart;
+        }
         return "constant " + operand;
     }
     // 字符常数
@@ -255,6 +347,14 @@ void SemanticAnalyzer::dumpQuads(const string& filename) const {
 void SemanticAnalyzer::dumpTarget(const string& filename) const {
     ofstream f(filename);
 
+    // 收集所有作用域的变量用于 VM 映射
+    map<string, SymbolEntry> allSymbols;
+    for (const auto& scope : scopeStack_) {
+        for (const auto& pair : scope.symbols) {
+            allSymbols[pair.first] = pair.second;
+        }
+    }
+
     int numLocals = varCount_;  // 只计算用户声明的变量
     int tempBase = varCount_;  // 临时变量使用 temp 段，不占 local
 
@@ -262,9 +362,9 @@ void SemanticAnalyzer::dumpTarget(const string& filename) const {
     f << "function Main.main " << numLocals << "\n";
 
     for (const auto& q : quads_) {
-        string a1 = toVM(q.arg1, symbolTable_, tempBase);
-        string a2 = toVM(q.arg2, symbolTable_, tempBase);
-        string rs = toVM(q.result, symbolTable_, tempBase);
+        string a1 = toVM(q.arg1, allSymbols, tempBase);
+        string a2 = toVM(q.arg2, allSymbols, tempBase);
+        string rs = toVM(q.result, allSymbols, tempBase);
 
         // 标签
         if (q.op == "label") {
@@ -312,20 +412,53 @@ void SemanticAnalyzer::dumpTarget(const string& filename) const {
             f << "add\n";
             f << "pop " << rs << "\n";
         }
+        // 结构体内存分配: (alloc, size, _, varName)
+        else if (q.op == "alloc") {
+            f << "push constant " << q.arg1 << "\n";
+            f << "call Memory.alloc 1\n";
+            f << "pop " << rs << "\n";
+        }
         // 函数调用: (call, name, nArgs, result)
         else if (q.op == "call") {
             string funcName = q.arg1;
-            // 将 read/write/println 映射为 Jack OS 函数
-            if (funcName == "read") funcName = "Keyboard.readInt";
-            else if (funcName == "write") funcName = "Output.printInt";
-            else if (funcName == "println") funcName = "Output.println";
-            f << "call " << funcName << " " << q.arg2 << "\n";
-            // 有返回值：pop 到目标位置
-            if (!q.result.empty() && q.result != "_") {
-                f << "pop " << rs << "\n";
-            } else {
-                // 无返回值：丢弃
-                f << "pop temp 0\n";
+            int nArgs = stoi(q.arg2);
+
+            // 内置结构体操作：set(p, offset, value) — 内联赋值
+            if (funcName == "set" && nArgs == 3) {
+                // 栈状态（从顶到低）: value, offset, p
+                f << "pop temp 1\n";      // 暂存 value
+                f << "add\n";             // p + offset → 绝对地址
+                f << "pop pointer 1\n";   // THAT = 绝对地址
+                f << "push temp 1\n";     // 恢复 value
+                f << "pop that 0\n";      // THAT[0] = value
+                // set 无返回值，pop 掉结果
+                if (!q.result.empty() && q.result != "_") {
+                    f << "push constant 0\n";
+                    f << "pop " << rs << "\n";
+                }
+            }
+            // 内置结构体操作：get(p, offset) — 内联读取
+            else if (funcName == "get" && nArgs == 2) {
+                // 栈状态（从顶到低）: offset, p
+                f << "add\n";             // p + offset → 绝对地址
+                f << "pop pointer 1\n";   // THAT = 绝对地址
+                f << "push that 0\n";     // 读取 THAT[0]
+                // get 有返回值
+                if (!q.result.empty() && q.result != "_") {
+                    f << "pop " << rs << "\n";
+                }
+            }
+            // 其他函数：标准调用
+            else {
+                if (funcName == "read") funcName = "Keyboard.readInt";
+                else if (funcName == "write") funcName = "Output.printInt";
+                else if (funcName == "println") funcName = "Output.println";
+                f << "call " << funcName << " " << nArgs << "\n";
+                if (!q.result.empty() && q.result != "_") {
+                    f << "pop " << rs << "\n";
+                } else {
+                    f << "pop temp 0\n";
+                }
             }
         }
         // 参数传递: (param, arg, _, _)

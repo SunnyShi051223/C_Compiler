@@ -98,6 +98,20 @@ build CMakeFiles/ShiXvn_Compiler.dir/src/SemanticAnalyzer.cpp.obj: CXX_COMPILER_
   OBJECT_DIR = CMakeFiles\ShiXvn_Compiler.dir
   OBJECT_FILE_DIR = CMakeFiles\ShiXvn_Compiler.dir\src
 
+build CMakeFiles/ShiXvn_Compiler.dir/src/AST.cpp.obj: CXX_COMPILER__ShiXvn_Compiler_unscanned_Debug D$:/c_cpp/ShiXvn_Compiler/src/AST.cpp || cmake_object_order_depends_target_ShiXvn_Compiler
+  DEP_FILE = CMakeFiles\ShiXvn_Compiler.dir\src\AST.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -ID:/c_cpp/ShiXvn_Compiler/include
+  OBJECT_DIR = CMakeFiles\ShiXvn_Compiler.dir
+  OBJECT_FILE_DIR = CMakeFiles\ShiXvn_Compiler.dir\src
+
+build CMakeFiles/ShiXvn_Compiler.dir/src/CodegenVisitor.cpp.obj: CXX_COMPILER__ShiXvn_Compiler_unscanned_Debug D$:/c_cpp/ShiXvn_Compiler/src/CodegenVisitor.cpp || cmake_object_order_depends_target_ShiXvn_Compiler
+  DEP_FILE = CMakeFiles\ShiXvn_Compiler.dir\src\CodegenVisitor.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -ID:/c_cpp/ShiXvn_Compiler/include
+  OBJECT_DIR = CMakeFiles\ShiXvn_Compiler.dir
+  OBJECT_FILE_DIR = CMakeFiles\ShiXvn_Compiler.dir\src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target ShiXvn_Compiler
@@ -106,7 +120,7 @@ build CMakeFiles/ShiXvn_Compiler.dir/src/SemanticAnalyzer.cpp.obj: CXX_COMPILER_
 #############################################
 # Link the executable D:\c_cpp\ShiXvn_Compiler\ShiXvn_Compiler.exe
 
-build D$:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe: CXX_EXECUTABLE_LINKER__ShiXvn_Compiler_Debug CMakeFiles/ShiXvn_Compiler.dir/main.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/Lexer.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/ErrorHandler.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/SymbolTable.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/Grammar.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/PrecedenceParser.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/SemanticAnalyzer.cpp.obj
+build D$:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe: CXX_EXECUTABLE_LINKER__ShiXvn_Compiler_Debug CMakeFiles/ShiXvn_Compiler.dir/main.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/Lexer.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/ErrorHandler.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/SymbolTable.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/Grammar.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/PrecedenceParser.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/SemanticAnalyzer.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/AST.cpp.obj CMakeFiles/ShiXvn_Compiler.dir/src/CodegenVisitor.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\ShiXvn_Compiler.dir

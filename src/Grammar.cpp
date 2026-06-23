@@ -40,6 +40,10 @@ void Grammar::initProductions() {
     productions_.push_back({id++, "S", {"int", "id"}});
     productions_.push_back({id++, "S", {"char", "id"}});
     productions_.push_back({id++, "S", {"double", "id"}});
+    // 数组声明：int id [ num ]
+    productions_.push_back({id++, "S", {"int", "id", "[", "num", "]"}});
+    productions_.push_back({id++, "S", {"char", "id", "[", "num", "]"}});
+    productions_.push_back({id++, "S", {"double", "id", "[", "num", "]"}});
     productions_.push_back({id++, "S", {"struct", "id", "{", "P", "}"}});
     productions_.push_back({id++, "S", {"struct", "id", "id"}});
 
@@ -167,6 +171,13 @@ void Grammar::buildPrecedenceTable() {
 
     // 赋值关系（= 和 ; 被 E 隔开）
     relation_["="][";"] = ">";
+
+    // if-else: } < else （{ S } 之后需要移进 else 而非归约）
+    relation_["}"]["else"] = "<";
+    // 块后分号: } > ; （if/while 块结束后归约为 S）
+    relation_["}"][";"] = ">";
+    // $ < ; （多语句程序的关键：$ S ; 序列）
+    relation_["$"][";"] = "<";
 }
 
 const vector<Production>& Grammar::getProductions() const { return productions_; }

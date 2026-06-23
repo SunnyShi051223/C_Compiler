@@ -2,6 +2,7 @@
 #include "include/Grammar.h"
 #include "include/PrecedenceParser.h"
 #include "include/SemanticAnalyzer.h"
+#include "include/AST.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -73,6 +74,13 @@ int main(int argc, char* argv[]) {
 
     parser.dumpAll();
     cout << "[Parser] Trace/Tree -> output/Parser/" << endl;
+
+    // 输出 AST（与 parse tree 平行构建，用于后续重构）
+    auto ast = parser.getAST();
+    if (ast) {
+        dumpAST(ast, "output/Parser/ast.txt");
+        cout << "[Parser] AST -> output/Parser/ast.txt" << endl;
+    }
 
     // ===== 阶段三：目标代码生成 =====
     semAnalyzer.dumpQuads("output/Codegen/quads.txt");

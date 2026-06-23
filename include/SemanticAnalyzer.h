@@ -23,6 +23,19 @@ struct SymbolEntry {
     bool isStruct;
 };
 
+// --- 函数签名 ---
+struct FuncEntry {
+    std::string name;
+    std::vector<std::string> paramTypes;
+    std::string returnType;
+};
+
+// --- 作用域 ---
+struct Scope {
+    std::map<std::string, SymbolEntry> symbols;
+    int baseOffset;  // 该作用域的起始偏移量
+};
+
 // --- 结构体类型定义 ---
 struct StructDef {
     std::string name;                          // 结构体名
@@ -41,6 +54,11 @@ public:
     // 标签管理
     std::string newLabel();
 
+    // 作用域管理
+    void enterScope();
+    void exitScope();
+    int getCurrentScopeLevel() const;
+
     // 符号表操作
     void declareVariable(const std::string& name, const std::string& type);
     bool isDeclared(const std::string& name) const;
@@ -48,11 +66,19 @@ public:
     int getOffset(const std::string& name) const;
     int getVariableCount() const;
 
+    // 函数表
+    void declareFunction(const std::string& name, const std::vector<std::string>& paramTypes, const std::string& returnType);
+    bool isFunctionDeclared(const std::string& name) const;
+    const FuncEntry* getFunction(const std::string& name) const;
+    void checkFunctionCall(const std::string& name, int argCount, int line);
+
     // 结构体类型表
     void defineStruct(const std::string& name);
     void addStructMember(const std::string& structName, const std::string& memberType, const std::string& memberName);
     bool isStructDefined(const std::string& name) const;
     bool isStructMember(const std::string& structName, const std::string& memberName) const;
+    int getMemberOffset(const std::string& structName, const std::string& memberName) const;
+    int getStructMemberCount(const std::string& structName) const;
 
     // 语义检查
     void checkAssignment(const std::string& lhs, const std::string& rhs, int line);
@@ -87,8 +113,13 @@ private:
     int labelCount_;
     int varCount_;
     std::vector<Quadruple> quads_;
-    std::map<std::string, SymbolEntry> symbolTable_;
+    std::vector<Scope> scopeStack_;              // 作用域栈
     std::map<std::string, StructDef> structTable_;  // 结构体类型表
+    std::map<std::string, FuncEntry> funcTable_;    // 函数表
+
+    // 在作用域栈中查找变量（从内到外）
+    SymbolEntry* lookup(const std::string& name);
+    const SymbolEntry* lookup(const std::string& name) const;
 
 public:
     // 结构体上下文（用于在声明语句中注册结构体成员）

@@ -12,6 +12,8 @@ add_executable(ShiXvn_Compiler
         src/Grammar.cpp
         src/PrecedenceParser.cpp
         src/SemanticAnalyzer.cpp
+        src/AST.cpp
+        src/CodegenVisitor.cpp
 )
 
 target_include_directories(ShiXvn_Compiler PRIVATE include)

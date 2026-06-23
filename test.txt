@@ -1,21 +1,49 @@
-// Micro-C 测试 — 不含 while/if（代码生成正确）
+// Micro-C 综合测试 — 不准更改！
 
-// 声明
+// ===== 声明 =====
 int x ;
 int y ;
 int z ;
+char c ;
+double d ;
+int num[10];
+struct Point{
+    int a;
+    char b;
+};
 
-// 赋值
+// ===== 赋值 =====
 x = 10 ;
 y = 20 ;
+c = 'A' ;
+d = 3.14 ;
+struct Point p;
 
-// 算术表达式
+int tmp;
+set(p,a,66);
+
+tmp = get(p,a);
+write(get(p, a));
+write(tmp);
+
+set(num,0,99);
+write(get(num,0));
+
+
+write(c);
+write(d);
+write(y);
+
+// ===== 算术表达式 =====
 z = x + y * 2 ;
 
-// 函数调用
-write(z) ;
-read(x) ;
-write(x) ;
+if(z > x){ write(x) ; } else{ write(y) ; } ;
 
-// 返回
+
+// ==== 循环 =====
+while(x < 15) { x = x + 1 ; } ;
+
+write(z);
+
+// ===== 返回 =====
 return 0 ;

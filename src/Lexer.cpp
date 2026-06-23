@@ -125,7 +125,7 @@ void Lexer::skipWhitespaceAndComments() {
     }
 }
 
-// --- 读取整型常数 ---
+// --- 读取数值常数（整数或浮点数）---
 Token Lexer::readNumber() {
     int startLine = line_;
     int startCol = column_;
@@ -134,6 +134,16 @@ Token Lexer::readNumber() {
     while (!isAtEnd() && isDigit(currentChar())) {
         value += currentChar();
         advance();
+    }
+
+    // 浮点数：数字后跟 . 再跟数字
+    if (!isAtEnd() && currentChar() == '.' && !isAtEnd() && isDigit(peekChar())) {
+        value += currentChar(); // '.'
+        advance();
+        while (!isAtEnd() && isDigit(currentChar())) {
+            value += currentChar();
+            advance();
+        }
     }
 
     // 检查标识符紧跟数字的情况（如 123abc），视为错误

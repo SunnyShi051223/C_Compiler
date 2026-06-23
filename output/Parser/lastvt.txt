@@ -2,4 +2,4 @@
 
 LASTVT(E) = { ), *, +, -, /, <, >, char, id, num }
 LASTVT(P) = { ; }
-LASTVT(S) = { ), *, +, -, /, <, =, >, char, id, num, return, } }
+LASTVT(S) = { ), *, +, -, /, <, =, >, ], char, id, num, return, } }
