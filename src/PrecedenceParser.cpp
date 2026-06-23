@@ -84,10 +84,18 @@ void PrecedenceParser::semanticAction(const Production& prod, int start) {
     else if (len == 7 && rhs[0] == "while") {
         string cond = stack_[start + 2].addr;
         string L0 = sem_.newLabel(), L1 = sem_.newLabel();
-        auto cq = sem_.extractLastQuads(1);
+
+        // 提取循环体四元式（在条件之后生成的）
+        int condEnd = stack_[start + 2].quadCount;
+        auto bodyQuads = sem_.extractQuadsFrom(condEnd);
+        // 提取条件结果四元式
+        auto condQuads = sem_.extractLastQuads(1);
+
+        // 正确顺序: label L0 | 条件 | if_false L1 | 循环体 | goto L0 | label L1
         sem_.emit("label", L0, "", "");
-        sem_.restoreQuads(cq);
+        sem_.restoreQuads(condQuads);
         int j = sem_.emit("if_false", cond, "", "");
+        sem_.restoreQuads(bodyQuads);
         sem_.emit("goto", L0, "", "");
         sem_.backpatch(j, L1);
         sem_.emit("label", L1, "", "");
@@ -95,10 +103,24 @@ void PrecedenceParser::semanticAction(const Production& prod, int start) {
     else if (len == 11 && rhs[0] == "if") {
         string cond = stack_[start + 2].addr;
         string L1 = sem_.newLabel(), L2 = sem_.newLabel();
+
+        int condEnd = stack_[start + 2].quadCount;
+        auto allBodyQuads = sem_.extractQuadsFrom(condEnd);
+        auto condQuads = sem_.extractLastQuads(1);
+
+        // 分割 then 和 else 的四元式（各占一半）
+        int mid = (int)allBodyQuads.size() / 2;
+        vector<Quadruple> thenQuads(allBodyQuads.begin(), allBodyQuads.begin() + mid);
+        vector<Quadruple> elseQuads(allBodyQuads.begin() + mid, allBodyQuads.end());
+
+        // 正确顺序: 条件 | if_false L1 | then体 | goto L2 | label L1 | else体 | label L2
+        sem_.restoreQuads(condQuads);
         int j = sem_.emit("if_false", cond, "", "");
+        sem_.restoreQuads(thenQuads);
         int g = sem_.emit("goto", L2, "", "");
         sem_.backpatch(j, L1);
         sem_.emit("label", L1, "", "");
+        sem_.restoreQuads(elseQuads);
         sem_.backpatch(g, L2);
         sem_.emit("label", L2, "", "");
     }
