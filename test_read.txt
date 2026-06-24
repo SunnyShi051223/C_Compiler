@@ -1,0 +1,5 @@
+// read() 测试
+int x ;
+x = read() ;
+write(x) ;
+return 0 ;

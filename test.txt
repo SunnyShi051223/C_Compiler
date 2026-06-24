@@ -13,7 +13,7 @@ struct Point{
 };
 
 // ===== 赋值 =====
-x = 10 ;
+x = read();
 y = 20 ;
 c = 'A' ;
 d = 3.14 ;
@@ -26,7 +26,7 @@ tmp = get(p,a);
 write(get(p, a));
 write(tmp);
 
-set(num,0,99);
+set(num,0,9);
 write(get(num,0));
 
 

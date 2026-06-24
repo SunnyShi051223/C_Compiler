@@ -355,8 +355,27 @@ void SemanticAnalyzer::dumpTarget(const string& filename) const {
         }
     }
 
-    int numLocals = varCount_;  // 只计算用户声明的变量
-    int tempBase = varCount_;  // 临时变量使用 temp 段，不占 local
+    // 第一遍扫描：找出使用的最大临时变量 ID
+    int maxTempId = -1;
+    for (const auto& q : quads_) {
+        auto checkTemp = [&](const string& s) {
+            if (!s.empty() && s[0] == 't' && s.size() > 1 && isdigit(s[1])) {
+                int tid = stoi(s.substr(1));
+                if (tid > maxTempId) maxTempId = tid;
+            }
+        };
+        checkTemp(q.arg1);
+        checkTemp(q.arg2);
+        checkTemp(q.result);
+    }
+
+    int numLocals = varCount_;  // 用户声明的变量
+    int tempBase = varCount_;   // 临时变量溢出到 local 段的起始位置
+    // 如果有临时变量超出 temp 段（8 个），需要扩展 local 空间
+    // t8 映射到 local (tempBase + 8)，t9 映射到 local (tempBase + 9)，以此类推
+    if (maxTempId >= 8) {
+        numLocals = tempBase + maxTempId + 1;  // 确保 local 空间足够
+    }
 
     // 函数头
     f << "function Main.main " << numLocals << "\n";
@@ -433,7 +452,7 @@ void SemanticAnalyzer::dumpTarget(const string& filename) const {
                 f << "pop that 0\n";      // THAT[0] = value
                 // set 无返回值，pop 掉结果
                 if (!q.result.empty() && q.result != "_") {
-                    f << "push constant 0\n";
+                    f << "push constant 1\n";
                     f << "pop " << rs << "\n";
                 }
             }
@@ -450,10 +469,19 @@ void SemanticAnalyzer::dumpTarget(const string& filename) const {
             }
             // 其他函数：标准调用
             else {
-                if (funcName == "read") funcName = "Keyboard.readInt";
-                else if (funcName == "write") funcName = "Output.printInt";
-                else if (funcName == "println") funcName = "Output.println";
-                f << "call " << funcName << " " << nArgs << "\n";
+                if (funcName == "read") {
+                    // read() 需要创建空字符串作为参数
+                    // Keyboard.readInt 接受 1 个 String 参数
+                    f << "push constant 0\n";      // 空字符串长度
+                    f << "call String.new 1\n";    // 创建空字符串
+                    f << "call Keyboard.readInt 1\n"; // 调用 readInt
+                } else if (funcName == "write") {
+                    f << "call Output.printInt " << nArgs << "\n";
+                } else if (funcName == "println") {
+                    f << "call Output.println " << nArgs << "\n";
+                } else {
+                    f << "call " << funcName << " " << nArgs << "\n";
+                }
                 if (!q.result.empty() && q.result != "_") {
                     f << "pop " << rs << "\n";
                 } else {

@@ -13,7 +13,7 @@ Step	Stack				Action
 9	$ S ; S ; S ; S ; S ; S ; struct id { S ; P		REDUCE: S ; → P (prod 2)
 10	$ S ; S ; S ; S ; S ; S ; struct id { P		REDUCE: S ; P → P (prod 1)
 11	$ S ; S ; S ; S ; S ; S ; S		REDUCE: struct id { P } → S (prod 9)
-12	$ S ; S ; S ; S ; S ; S ; S ; id = E		REDUCE: num → E (prod 28)
+12	$ S ; S ; S ; S ; S ; S ; S ; id = E		REDUCE: id ( ) → E (prod 16)
 13	$ S ; S ; S ; S ; S ; S ; S ; S		REDUCE: id = E → S (prod 11)
 14	$ S ; S ; S ; S ; S ; S ; S ; S ; id = E		REDUCE: num → E (prod 28)
 15	$ S ; S ; S ; S ; S ; S ; S ; S ; S		REDUCE: id = E → S (prod 11)

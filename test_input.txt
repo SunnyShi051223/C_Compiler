@@ -1,0 +1,10 @@
+// 输入测试
+
+
+int i ;
+
+read(i);
+write(i);
+
+
+return 0 ;
