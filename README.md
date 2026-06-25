@@ -358,7 +358,7 @@ struct Point { int a ; char b ; } ;
 struct Point p ;
 
 // 赋值
-x = read() ;
+x = read() ;     // 假设输入10 
 y = 20 ;
 c = 'A' ;
 
@@ -373,11 +373,11 @@ set(arr, 2, 30) ;
 write(get(arr, 0)) ;    // 输出 10
 
 // 算术表达式
-z = x + y * 2 ;
+z = x + y * 2 ;   // z = 50
 
 // 条件判断
 if ( z > x ) {
-    write(x) ;
+    write(x) ;   // 输出 10
 } else {
     write(y) ;
 } ;
@@ -387,7 +387,7 @@ while ( x < 15 ) {
     x = x + 1 ;
 } ;
 
-write(z) ;
+write(z) ;  // 输出 50
 
 return 0 ;
 ```
