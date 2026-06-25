@@ -56,6 +56,7 @@ void Grammar::initProductions() {
     // === 控制流 ===
     productions_.push_back({id++, "S", {"while", "(", "E", ")", "{", "P", "}"}});
     productions_.push_back({id++, "S", {"if", "(", "E", ")", "{", "P", "}", "else", "{", "P", "}"}});
+    productions_.push_back({id++, "S", {"if", "(", "E", ")", "{", "P", "}"}});
     productions_.push_back({id++, "S", {"return", "E"}});
 
     // === 表达式 ===

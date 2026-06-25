@@ -477,6 +477,10 @@ void SemanticAnalyzer::dumpTarget(const string& filename) const {
                     f << "call Keyboard.readInt 1\n"; // 调用 readInt
                 } else if (funcName == "write") {
                     f << "call Output.printInt " << nArgs << "\n";
+                } else if (funcName == "writeChar") {
+                    f << "call Output.printChar " << nArgs << "\n";
+                } else if (funcName == "writeString") {
+                    f << "call Output.printString " << nArgs << "\n";
                 } else if (funcName == "println") {
                     f << "call Output.println " << nArgs << "\n";
                 } else {

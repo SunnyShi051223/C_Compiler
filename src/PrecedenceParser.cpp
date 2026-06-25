@@ -150,6 +150,22 @@ void PrecedenceParser::semanticAction(const Production& prod, int start) {
         sem_.backpatch(g, L2);
         sem_.emit("label", L2, "", "");
     }
+    // if ( E ) { P } （无 else）
+    else if (len == 7 && rhs[0] == "if") {
+        string cond = stack_[start + 2].addr;
+        string L1 = sem_.newLabel();
+
+        int condEnd = stack_[start + 2].quadCount;
+        auto bodyQuads = sem_.extractQuadsFrom(condEnd);
+        auto condQuads = sem_.extractLastQuads(1);
+
+        // 正确顺序: 条件 | if_false L1 | then体 | label L1
+        sem_.restoreQuads(condQuads);
+        int j = sem_.emit("if_false", cond, "", "");
+        sem_.restoreQuads(bodyQuads);
+        sem_.backpatch(j, L1);
+        sem_.emit("label", L1, "", "");
+    }
     else if (len == 2 && rhs[0] == "return") {
         sem_.emit("return", stack_[start + 1].addr, "", "");
     }
@@ -348,6 +364,14 @@ void PrecedenceParser::buildASTForProduction(const Production& prod, int start) 
         if (stack_[start+2].astNode) node->addChild(stack_[start+2].astNode);
         if (stack_[start+5].astNode) node->addChild(stack_[start+5].astNode);
         if (stack_[start+9].astNode) node->addChild(stack_[start+9].astNode);
+        stack_[start].astNode = node;
+        return;
+    }
+    // S → if(E){P}（无 else）
+    if (len == 7 && rhs[0] == "if") {
+        auto node = make_shared<ASTNode>(ASTNodeType::IfStmt, "", stack_[start].line);
+        if (stack_[start+2].astNode) node->addChild(stack_[start+2].astNode);
+        if (stack_[start+5].astNode) node->addChild(stack_[start+5].astNode);
         stack_[start].astNode = node;
         return;
     }
