@@ -130,6 +130,39 @@ build D$:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe: CXX_EXECUTABLE_LINKER__ShiX
   TARGET_IMPLIB = libShiXvn_Compiler.dll.a
   TARGET_PDB = ShiXvn_Compiler.exe.dbg
 
+# =============================================================================
+# Object build statements for EXECUTABLE target VMTranslator
+
+
+#############################################
+# Order-only phony target for VMTranslator
+
+build cmake_object_order_depends_target_VMTranslator: phony || CMakeFiles/VMTranslator.dir
+
+build CMakeFiles/VMTranslator.dir/tools/VMTranslator.cpp.obj: CXX_COMPILER__VMTranslator_unscanned_Debug D$:/c_cpp/ShiXvn_Compiler/tools/VMTranslator.cpp || cmake_object_order_depends_target_VMTranslator
+  DEP_FILE = CMakeFiles\VMTranslator.dir\tools\VMTranslator.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\VMTranslator.dir
+  OBJECT_FILE_DIR = CMakeFiles\VMTranslator.dir\tools
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target VMTranslator
+
+
+#############################################
+# Link the executable D:\c_cpp\ShiXvn_Compiler\VMTranslator.exe
+
+build D$:/c_cpp/ShiXvn_Compiler/VMTranslator.exe: CXX_EXECUTABLE_LINKER__VMTranslator_Debug CMakeFiles/VMTranslator.dir/tools/VMTranslator.cpp.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\VMTranslator.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = D:\c_cpp\ShiXvn_Compiler\VMTranslator.exe
+  TARGET_IMPLIB = libVMTranslator.dll.a
+  TARGET_PDB = VMTranslator.exe.dbg
+
 
 #############################################
 # Utility command for edit_cache
@@ -160,6 +193,10 @@ build ShiXvn_Compiler: phony D$:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe
 
 build ShiXvn_Compiler.exe: phony D$:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe
 
+build VMTranslator: phony D$:/c_cpp/ShiXvn_Compiler/VMTranslator.exe
+
+build VMTranslator.exe: phony D$:/c_cpp/ShiXvn_Compiler/VMTranslator.exe
+
 # =============================================================================
 # Folder targets.
 
@@ -168,7 +205,7 @@ build ShiXvn_Compiler.exe: phony D$:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe
 #############################################
 # Folder: D:/c_cpp/ShiXvn_Compiler/cmake-build-debug
 
-build all: phony D$:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe
+build all: phony D$:/c_cpp/ShiXvn_Compiler/ShiXvn_Compiler.exe D$:/c_cpp/ShiXvn_Compiler/VMTranslator.exe
 
 # =============================================================================
 # Built-in targets

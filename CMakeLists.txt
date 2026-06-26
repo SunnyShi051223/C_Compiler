@@ -17,3 +17,8 @@ add_executable(ShiXvn_Compiler
 )
 
 target_include_directories(ShiXvn_Compiler PRIVATE include)
+
+# VMTranslator 工具
+add_executable(VMTranslator
+        tools/VMTranslator.cpp
+)

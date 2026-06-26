@@ -42,7 +42,7 @@ void writeTokens(const string& filename, const vector<Token>& tokens) {
 }
 
 int main(int argc, char* argv[]) {
-    string filename = (argc >= 2) ? argv[1] : "test_bubble.txt";
+    string filename = (argc >= 2) ? argv[1] : "test.txt";
     cout << filename << endl;
     string source = readFile(filename);
     if (source.empty()) return 1;
@@ -86,6 +86,9 @@ int main(int argc, char* argv[]) {
     // ===== 阶段三：目标代码生成 =====
     semAnalyzer.dumpQuads("output/Codegen/quads.txt");
     semAnalyzer.dumpTarget("output/Codegen/Main.vm");
+
+    semAnalyzer.dumpTarget("D:\\VMTool\\Target\\Main.vm"); //测试 py的translator
+
     cout << "[Codegen] Quads   -> output/Codegen/quads.txt" << endl;
     cout << "[Codegen] Target  -> output/Codegen/Main.vm" << endl;
 

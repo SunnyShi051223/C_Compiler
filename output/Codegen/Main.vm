@@ -1,113 +1,23 @@
-function Main.main 66
+function Main.main 21
 push constant 10
-call Memory.alloc 1
-pop local 0
-push constant 10
-pop local 1
-push local 0
-push constant 0
-push constant 9
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop temp 0
-push local 0
-push constant 1
-push constant 8
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop temp 1
-push local 0
-push constant 2
-push constant 7
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop temp 2
-push local 0
-push constant 3
-push constant 6
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop temp 3
-push local 0
-push constant 4
-push constant 5
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop temp 4
-push local 0
-push constant 5
-push constant 4
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop temp 5
-push local 0
-push constant 6
-push constant 3
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop temp 6
-push local 0
-push constant 7
-push constant 2
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop temp 7
-push local 0
-push constant 8
-push constant 1
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop local 15
-push local 0
-push constant 9
-push constant 0
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop local 16
-push constant 6
 call Memory.alloc 1
 pop local 5
-push local 5
+push constant 0
+call String.new 1
+call Keyboard.readInt 1
+pop temp 0
+push temp 0
+pop local 0
+push constant 20
+pop local 1
+push constant 65
+pop local 3
+push constant 3
+pop local 4
+push constant 2
+call Memory.alloc 1
+pop local 8
+push local 8
 push constant 0
 push constant 66
 pop temp 1
@@ -116,333 +26,99 @@ pop pointer 1
 push temp 1
 pop that 0
 push constant 1
-pop local 17
-push local 5
-push constant 1
-push constant 101
 pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop local 18
-push local 5
-push constant 2
-push constant 103
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop local 19
-push local 5
-push constant 3
-push constant 105
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop local 20
-push local 5
-push constant 4
-push constant 110
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop local 21
-push local 5
-push constant 5
-push constant 0
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop local 22
-push local 5
+push local 8
 push constant 0
 add
 pop pointer 1
 push that 0
-pop local 23
-push local 23
-call Output.printChar 1
-pop local 24
-push local 5
-push constant 1
-add
-pop pointer 1
-push that 0
-pop local 25
-push local 25
-call Output.printChar 1
-pop local 26
-push local 5
-push constant 2
-add
-pop pointer 1
-push that 0
-pop local 27
-push local 27
-call Output.printChar 1
-pop local 28
-push local 5
-push constant 3
-add
-pop pointer 1
-push that 0
-pop local 29
-push local 29
-call Output.printChar 1
-pop local 30
-push local 5
-push constant 4
-add
-pop pointer 1
-push that 0
-pop local 31
-push local 31
-call Output.printChar 1
-pop local 32
-call Output.println 0
-pop local 33
+pop temp 2
+push temp 2
+pop local 9
+push local 8
 push constant 0
-pop local 2
-label L0
-push local 2
-push local 1
-lt
-pop local 34
-push local 34
-not
-if-goto L1
-push local 0
-push local 2
 add
 pop pointer 1
 push that 0
-pop local 35
-push local 35
+pop temp 3
+push temp 3
 call Output.printInt 1
 pop temp 0
-push local 2
-push constant 1
-add
-pop local 36
-push local 36
-pop local 2
-goto L0
-label L1
+push local 9
+call Output.printInt 1
+pop temp 0
+push local 5
 push constant 0
-pop local 2
-label L5
-push local 2
 push constant 9
-lt
-pop local 37
-push local 37
-not
-if-goto L6
-push constant 0
-pop local 3
-label L3
-push local 3
-push constant 9
-lt
-pop local 38
-push local 38
-not
-if-goto L4
-push local 0
-push local 3
-add
-pop pointer 1
-push that 0
-pop local 39
-push local 3
-push constant 1
-add
-pop local 40
-push local 0
-push local 40
-add
-pop pointer 1
-push that 0
-pop local 41
-push local 39
-push local 41
-gt
-pop local 42
-push local 42
-not
-if-goto L2
-push local 0
-push local 3
-add
-pop pointer 1
-push that 0
-pop local 43
-push local 43
-pop local 4
-push local 3
-push constant 1
-add
-pop local 44
-push local 0
-push local 44
-add
-pop pointer 1
-push that 0
-pop local 45
-push local 0
-push local 3
-push local 45
 pop temp 1
 add
 pop pointer 1
 push temp 1
 pop that 0
 push constant 1
-pop local 46
-push local 3
-push constant 1
+pop temp 4
+push local 5
+push constant 0
 add
-pop local 47
-push local 0
-push local 47
+pop pointer 1
+push that 0
+pop temp 5
+push temp 5
+call Output.printInt 1
+pop temp 0
+push local 3
+call Output.printInt 1
+pop temp 0
 push local 4
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop local 48
-label L2
-push local 3
-push constant 1
-add
-pop local 49
-push local 49
-pop local 3
-goto L3
-label L4
-push local 2
-push constant 1
-add
-pop local 50
-push local 50
-pop local 2
-goto L5
-label L6
-call Output.println 0
-pop local 51
-push constant 4
-call Memory.alloc 1
-pop local 6
-push local 6
-push constant 0
-push constant 69
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop local 52
-push local 6
-push constant 1
-push constant 110
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop local 53
-push local 6
-push constant 2
-push constant 100
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop local 54
-push local 6
-push constant 3
-push constant 0
-pop temp 1
-add
-pop pointer 1
-push temp 1
-pop that 0
-push constant 1
-pop local 55
-push local 6
-push constant 0
-add
-pop pointer 1
-push that 0
-pop local 56
-push local 56
-call Output.printChar 1
-pop local 57
-push local 6
-push constant 1
-add
-pop pointer 1
-push that 0
-pop local 58
-push local 58
-call Output.printChar 1
-pop local 59
-push local 6
-push constant 2
-add
-pop pointer 1
-push that 0
-pop local 60
-push local 60
-call Output.printChar 1
-pop local 61
-call Output.println 0
-pop local 62
-push constant 0
-pop local 2
-label L7
-push local 2
-push local 1
-lt
-pop local 63
-push local 63
-not
-if-goto L8
-push local 0
-push local 2
-add
-pop pointer 1
-push that 0
-pop local 64
-push local 64
 call Output.printInt 1
 pop temp 0
+push local 1
+call Output.printInt 1
+pop temp 0
+push local 1
+push constant 2
+call Math.multiply 2
+pop temp 6
+push local 0
+push temp 6
+add
+pop temp 7
+push temp 7
+pop local 2
 push local 2
+push local 0
+gt
+pop local 18
+push local 18
+not
+if-goto L0
+push local 0
+call Output.printInt 1
+pop temp 0
+goto L1
+label L0
+push local 1
+call Output.printInt 1
+pop temp 0
+label L1
+label L2
+push local 0
+push constant 15
+lt
+pop local 19
+push local 19
+not
+if-goto L3
+push local 0
 push constant 1
 add
-pop local 65
-push local 65
-pop local 2
-goto L7
-label L8
+pop local 20
+push local 20
+pop local 0
+goto L2
+label L3
+push local 2
+call Output.printInt 1
+pop temp 0
 push constant 0
 return
