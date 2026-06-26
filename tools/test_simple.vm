@@ -1,8 +1,0 @@
-// 简单的测试 VM 程序
-// 计算 1 + 2 并返回结果
-
-function Simple.add 0
-push constant 1
-push constant 2
-add
-return
