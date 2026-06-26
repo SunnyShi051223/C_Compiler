@@ -303,22 +303,26 @@ private:
     string translateReturn() {
         stringstream ss;
 
-        // 保存 LCL 到临时寄存器
+        // 保存 LCL 到临时寄存器 (endFrame)
         ss << "@LCL\nD=M\n@R13\nM=D\n";
 
-        // 计算返回地址
+        // 计算返回地址: retAddr = *(endFrame - 5)
         ss << "@5\nA=D-A\nD=M\n@R14\nM=D\n";
 
         // 将返回值放到 ARG[0]
         ss << "@SP\nAM=M-1\nD=M\n@ARG\nA=M\nM=D\n";
 
-        // 恢复 SP
+        // 恢复 SP = ARG + 1
         ss << "@ARG\nD=M+1\n@SP\nM=D\n";
 
-        // 恢复调用帧
+        // 恢复调用帧（注意顺序：THAT, THIS, ARG, LCL）
+        // THAT = *(endFrame - 1)
         ss << "@R13\nAM=M-1\nD=M\n@THAT\nM=D\n";
+        // THIS = *(endFrame - 2)
         ss << "@R13\nAM=M-1\nD=M\n@THIS\nM=D\n";
+        // ARG = *(endFrame - 3)
         ss << "@R13\nAM=M-1\nD=M\n@ARG\nM=D\n";
+        // LCL = *(endFrame - 4)
         ss << "@R13\nAM=M-1\nD=M\n@LCL\nM=D\n";
 
         // 跳转到返回地址
@@ -334,8 +338,8 @@ private:
         // 设置 SP=256
         ss << "@256\nD=A\n@SP\nM=D\n";
 
-        // 调用 Sys.init
-        ss << translateCall("Sys.init", 0);
+        // 调用 Main.main（而不是 Sys.init，因为我们的程序没有 Sys.init）
+        ss << translateCall("Main.main", 0);
 
         return ss.str();
     }
@@ -447,8 +451,8 @@ int main(int argc, char* argv[]) {
     VMTranslator translator;
     stringstream finalOutput;
 
-    // 如果有多个文件，生成初始化代码
-    bool generateInit = (inputFiles.size() > 1);
+    // 总是生成初始化代码（设置 SP=256 并调用 Sys.init 或 Main.main）
+    bool generateInit = true;
 
     for (size_t i = 0; i < inputFiles.size(); i++) {
         string content = translator.translateFile(inputFiles[i], (i == 0 && generateInit));

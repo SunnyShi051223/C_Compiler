@@ -42,7 +42,7 @@ void writeTokens(const string& filename, const vector<Token>& tokens) {
 }
 
 int main(int argc, char* argv[]) {
-    string filename = (argc >= 2) ? argv[1] : "test.txt";
+    string filename = (argc >= 2) ? argv[1] : "test_bubble.txt";
     cout << filename << endl;
     string source = readFile(filename);
     if (source.empty()) return 1;
