@@ -1,0 +1,8 @@
+// test_simple.txt
+
+int x;
+int y;
+x = 10;
+
+y = x + x;
+return y;

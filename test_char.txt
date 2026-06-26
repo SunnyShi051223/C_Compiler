@@ -1,0 +1,23 @@
+// 字符输出测试
+
+char c ;
+int x ;
+
+// 字符赋值
+c = 'A' ;
+x = 65 ;
+
+// 输出整数（ASCII 值）
+write(x) ;
+
+// 输出字符
+writeChar(c) ;
+
+// 输出字面量字符
+writeChar('H') ;
+writeChar('e') ;
+writeChar('l') ;
+writeChar('l') ;
+writeChar('o') ;
+
+return 0 ;
