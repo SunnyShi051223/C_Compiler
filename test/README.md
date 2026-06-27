@@ -57,7 +57,7 @@ D:\nand2tetris\nand2tetris\tools\Assembler.bat output\Codegen\Main.asm
 
 1. 打开 `D:\nand2tetris\nand2tetris\tools\CPUEmulator.bat`
 2. File → Load Program → 选择 `output\Codegen\Main.hack`
-3. 设置 RAM[0] = 256
+3. **不需要手动设置 RAM[0]**（程序会自动初始化 SP=256）
 4. 点击 Run（或按 F5）
 5. 查看 RAM[256] 应该显示 55
 
@@ -69,7 +69,6 @@ load Main.hack,
 output-file test.out,
 output-list RAM[0]%D2.6.2 RAM[256]%D2.6.2;
 
-set RAM[0] 256,
 repeat 5000 {
   ticktock;
 }
@@ -87,6 +86,8 @@ D:\nand2tetris\nand2tetris\tools\CPUEmulator.bat test.tst
 |  RAM[0]  | RAM[256] |
 |     257  |      55  |
 ```
+
+**注意：不需要 `set RAM[0] 256`，因为程序开头会自动初始化栈指针。**
 
 ---
 

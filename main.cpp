@@ -42,7 +42,7 @@ void writeTokens(const string& filename, const vector<Token>& tokens) {
 }
 
 int main(int argc, char* argv[]) {
-    string filename = (argc >= 2) ? argv[1] : "test_flow.txt";
+    string filename = (argc >= 2) ? argv[1] : "test_simple.txt";
     cout << filename << endl;
     string source = readFile(filename);
     if (source.empty()) return 1;

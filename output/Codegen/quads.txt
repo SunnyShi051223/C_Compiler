@@ -2,15 +2,9 @@
 
 ID    OP          ARG1        ARG2        RESULT      
 ----  ---------  ---------  ---------  ---------
-0     =           0           -           sum         
-1     =           1           -           i           
-2     label       L0          -           -           
-3     <           i           11          t0          
-4     if_false    t0          -           L1          
-5     +           sum         i           t1          
-6     =           t1          -           sum         
-7     +           i           1           t2          
-8     =           t2          -           i           
-9     goto        L0          -           -           
-10    label       L1          -           -           
-11    return      sum         -           -           
+0     =           10          -           x           
+1     +           x           x           t0          
+2     =           t0          -           y           
+3     param       y           -           -           
+4     call        write       1           _           
+5     return      y           -           -           
